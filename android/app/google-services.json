@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "961054528318",
+    "project_id": "foodapp-605bd",
+    "storage_bucket": "foodapp-605bd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:961054528318:android:914be5c4946177bab1926f",
+        "android_client_info": {
+          "package_name": "com.atomdyno.foodapp"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAEXkxB4CnJtp0k0EmVNjWeK2Ss73iEwZY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
