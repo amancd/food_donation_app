@@ -120,7 +120,7 @@ class _RequestListScreenState extends State<RequestListScreen> {
                     const SizedBox(height: 10,),
                     if (imageUrl != null) Image.network(imageUrl, height: 100,),
                     const SizedBox(height: 10,),
-                    Text('Amount: $amount'),
+                    Text('Amount: $amount',),
                     Text('Quality: $quality'),
                     Text('Location: $location'),
                     Text('Items: $items'),

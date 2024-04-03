@@ -30,9 +30,27 @@ class _LoginScreenState extends State<LoginScreen> {
     } catch (e) {
       // Handle login errors here
       print('Login failed: $e');
-      // You can show a dialog or a snackbar to display the error to the user
+      // Show a dialog for wrong password
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text('Login Failed'),
+            content: Text('Invalid email or password. Please try again.'),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+                  Navigator.of(context).pop();
+                },
+                child: Text('OK'),
+              ),
+            ],
+          );
+        },
+      );
     }
   }
+
 
   @override
   Widget build(BuildContext context) {

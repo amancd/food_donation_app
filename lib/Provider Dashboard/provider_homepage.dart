@@ -1,25 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodapp/Provider%20Dashboard/Navigation/navigation.dart';
+import 'package:foodapp/Provider%20Dashboard/edit_profile.dart';
 import 'package:foodapp/Screens/WelcomeScreen.dart';
 
 class ProviderHomePage extends StatelessWidget {
   const ProviderHomePage({Key? key});
-
-  Future<void> _logout(BuildContext context) async {
-    try {
-      await FirebaseAuth.instance.signOut();
-      // After logout, navigate to the login screen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const WelcomeScreen(),
-        ),
-      );
-    } catch (e) {
-      print('Error logging out: $e');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +15,10 @@ class ProviderHomePage extends StatelessWidget {
         title: const Text("Home"),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () => _logout(context),
+            icon: const Icon(Icons.person),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const EditPartyVenuePage()),
+            ),
           ),
         ],
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodapp/NGO%20Dashboard/Navigation/ngo_nav.dart';
+import 'package:foodapp/NGO%20Dashboard/edit_profile.dart';
 import 'package:foodapp/Screens/WelcomeScreen.dart';
 
 class NGOHomePage extends StatelessWidget {
@@ -26,11 +27,13 @@ class NGOHomePage extends StatelessWidget {
     return Scaffold(
       drawer: const Ngonav(),
       appBar: AppBar(
-        title: const Text("Home"),
+        title: const Text("NGO Dashboard"),
         actions: [
           IconButton(
-            icon: const Icon(Icons.logout),
-            onPressed: () => _logout(context),
+            icon: const Icon(Icons.person),
+            onPressed: () => Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => const EditPage()),
+            ),
           ),
         ],
       ),

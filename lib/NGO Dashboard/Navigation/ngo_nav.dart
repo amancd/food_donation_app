@@ -4,6 +4,9 @@ import 'package:foodapp/NGO%20Dashboard/ngo_pickup.dart';
 import 'package:foodapp/NGO%20Dashboard/ngo_requests.dart';
 import 'package:foodapp/allngo.dart';
 import 'package:foodapp/Provider%20Dashboard/provider_homepage.dart';
+import 'package:foodapp/pages/about.dart';
+import 'package:foodapp/pages/contact.dart';
+import 'package:foodapp/pages/privacy.dart';
 
 
 class Ngonav extends StatelessWidget {
@@ -50,7 +53,7 @@ Widget buildHeader(BuildContext context) {
               height: 10,
             ),
             const Text(
-              'NGO Dashboard',
+              'Food Bridge',
               style: TextStyle(
                 color: Colors.white,
                 fontSize: 21,
@@ -148,17 +151,17 @@ Widget buildMenuItems(BuildContext context) {
           title: const Text("About", style: TextStyle(color: Colors.black)),
           onTap: () {
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const ProviderHomePage()),
+              MaterialPageRoute(builder: (context) => About()),
             );
           },
         ),
         ListTile(
           leading: const Icon(Icons.error, color: Colors.black),
           title:
-          const Text("Disclaimer", style: TextStyle(color: Colors.black)),
+          const Text("Contact", style: TextStyle(color: Colors.black)),
           onTap: () {
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const ProviderHomePage()),
+              MaterialPageRoute(builder: (context) => Contact()),
             );
           },
         ),
@@ -168,7 +171,7 @@ Widget buildMenuItems(BuildContext context) {
               style: TextStyle(color: Colors.black)),
           onTap: () {
             Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const ProviderHomePage()),
+              MaterialPageRoute(builder: (context) => Privacy()),
             );
           },
         ),

@@ -26,7 +26,7 @@ class AdminHomePage extends StatelessWidget {
     return Scaffold(
       drawer: const AdminNav(),
       appBar: AppBar(
-        title: const Text("Home"),
+        title: const Text("Admin Dashboard"),
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),

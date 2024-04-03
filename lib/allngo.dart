@@ -29,7 +29,7 @@ class AllNGOPage extends StatelessWidget {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.0),
                     gradient: LinearGradient(
-                      colors: [Colors.cyan.shade400, Colors.cyan.shade600],
+                      colors: [Colors.blueAccent, Colors.lightBlue.shade600],
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                     ),
@@ -45,15 +45,18 @@ class AllNGOPage extends StatelessWidget {
                   child: ListTile(
                     title: Text(
                       ngoData['NGO Name'],
+                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Phone: ${ngoData['phoneNumber']}',
+                          style: TextStyle(color: Colors.white),
                         ),
                         Text(
                           'Address: ${ngoData['address']}',
+                          style: TextStyle(color: Colors.white),
                         ),
                       ],
                     ),

@@ -23,12 +23,11 @@ class _SignUpScreenState extends State<SignUpScreen> {
     try {
       // Check if user with provided email already exists
       QuerySnapshot existingUsers = await FirebaseFirestore.instance
-          .collection('users')
+          .collection('party-venue')
           .where('email', isEqualTo: _emailController.text)
           .get();
 
       if (existingUsers.docs.isNotEmpty) {
-        // User already exists, show message and return
         showDialog(
           context: context,
           builder: (context) => AlertDialog(
