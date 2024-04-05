@@ -1,26 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodapp/NGO%20Dashboard/Navigation/ngo_nav.dart';
 import 'package:foodapp/NGO%20Dashboard/edit_profile.dart';
-import 'package:foodapp/Screens/WelcomeScreen.dart';
+
 
 class NGOHomePage extends StatelessWidget {
   const NGOHomePage({Key? key});
 
-  Future<void> _logout(BuildContext context) async {
-    try {
-      await FirebaseAuth.instance.signOut();
-      // After logout, navigate to the login screen
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const WelcomeScreen(),
-        ),
-      );
-    } catch (e) {
-      print('Error logging out: $e');
-    }
-  }
 
   @override
   Widget build(BuildContext context) {

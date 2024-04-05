@@ -15,6 +15,7 @@ class _EditPartyVenuePageState extends State<EditPartyVenuePage> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController(); // New password controller
 
   late String currentUserUid;
 
@@ -75,16 +76,21 @@ class _EditPartyVenuePageState extends State<EditPartyVenuePage> {
         title: const Text('Edit Details'),
         actions: [
           IconButton(
-              onPressed: () => _logout(context),
-              icon: const Icon(Icons.exit_to_app),
-            ),
+            onPressed: () => _logout(context),
+            icon: const Icon(Icons.exit_to_app),
+          ),
         ],
       ),
-        body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Image.asset(
+              "assets/image3.png",
+              height: 150,
+            ),
+            const SizedBox(height: 20),
             TextFormField(
               controller: _nameController,
               decoration: const InputDecoration(
@@ -136,18 +142,41 @@ class _EditPartyVenuePageState extends State<EditPartyVenuePage> {
                 return null;
               },
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                if (_validateForm()) {
-                  _updatePartyVenue();
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.cyan.shade700,
-                foregroundColor: Colors.white
+            const SizedBox(height: 10),
+            TextFormField(
+              controller: _newPasswordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: 'New Password',
+                prefixIcon: Icon(Icons.lock),
+                border: OutlineInputBorder(),
               ),
-              child: const Text('Update Details'),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    if (_validateForm()) {
+                      _updatePartyVenue();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.cyan.shade700,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Update Details'),
+                ),
+                ElevatedButton(
+                  onPressed: _updatePassword,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: Colors.red,
+                    foregroundColor: Colors.white,
+                  ),
+                  child: const Text('Update Password'),
+                ),
+              ],
             ),
           ],
         ),
@@ -160,17 +189,28 @@ class _EditPartyVenuePageState extends State<EditPartyVenuePage> {
         _addressController.text.isEmpty ||
         _phoneNumberController.text.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please fill in all the fields')));
+        const SnackBar(content: Text('Please fill in all the fields')),
+      );
       return false;
     }
     return true;
   }
 
   void _updatePartyVenue() async {
+    // Retrieve the phone number from the controller
+    String newPhoneNumber = _phoneNumberController.text.trim();
+
+    // Validate the phone number
+    if (newPhoneNumber.length != 10 || int.tryParse(newPhoneNumber) == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please enter a valid 10-digit phone number')));
+      return;
+    }
+
+    // Proceed with updating the details
     String newName = _nameController.text.trim();
     String newAddress = _addressController.text.trim();
     String newEmail = _emailController.text.trim();
-    String newPhoneNumber = _phoneNumberController.text.trim();
 
     try {
       await FirebaseFirestore.instance
@@ -187,6 +227,21 @@ class _EditPartyVenuePageState extends State<EditPartyVenuePage> {
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(content: Text('Failed to update party venue details')));
+    }
+  }
+
+  void _updatePassword() async {
+    String newPassword = _newPasswordController.text.trim();
+
+    try {
+      await FirebaseAuth.instance.currentUser!.updatePassword(newPassword);
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Password updated successfully')),
+      );
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Failed to update password')),
+      );
     }
   }
 }

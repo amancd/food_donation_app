@@ -15,6 +15,7 @@ class _EditPageState extends State<EditPage> {
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _phoneNumberController = TextEditingController();
+  final TextEditingController _newPasswordController = TextEditingController(); // New password controller
 
   late String currentUserUid;
 
@@ -25,6 +26,37 @@ class _EditPageState extends State<EditPage> {
     fetchPartyVenueDetails();
   }
 
+  // Fetching current user UID
+  void fetchCurrentUserUid() {
+    final User? user = FirebaseAuth.instance.currentUser;
+    if (user != null) {
+      currentUserUid = user.uid;
+    }
+  }
+
+  // Fetching party venue details
+  void fetchPartyVenueDetails() async {
+    try {
+      DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
+          .collection('ngo-details')
+          .doc(currentUserUid)
+          .get();
+
+      if (docSnapshot.exists) {
+        Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
+        setState(() {
+          _nameController.text = data?['NGO Name'] ?? '';
+          _addressController.text = data?['address'] ?? '';
+          _emailController.text = data?['email'] ?? '';
+          _phoneNumberController.text = data?['phoneNumber'] ?? '';
+        });
+      }
+    } catch (e) {
+      print('Error fetching party venue details: $e');
+    }
+  }
+
+  // Logout function
   Future<void> _logout(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signOut();
@@ -40,31 +72,65 @@ class _EditPageState extends State<EditPage> {
     }
   }
 
-  void fetchCurrentUserUid() {
-    final User? user = FirebaseAuth.instance.currentUser;
-    if (user != null) {
-      currentUserUid = user.uid;
+  // Form validation function
+  bool _validateForm() {
+    if (_nameController.text.isEmpty ||
+        _addressController.text.isEmpty ||
+        _phoneNumberController.text.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please fill in all the fields')));
+      return false;
+    }
+    return true;
+  }
+
+  // Update party venue function
+  void _updatePartyVenue() async {
+    // Retrieve the phone number from the controller
+    String newPhoneNumber = _phoneNumberController.text.trim();
+
+    // Validate the phone number
+    if (newPhoneNumber.length != 10 || int.tryParse(newPhoneNumber) == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please enter a valid 10-digit phone number')));
+      return;
+    }
+
+    // Proceed with updating the details
+    String newName = _nameController.text.trim();
+    String newAddress = _addressController.text.trim();
+    String newEmail = _emailController.text.trim();
+
+    try {
+      await FirebaseFirestore.instance
+          .collection('ngo-details')
+          .doc(currentUserUid)
+          .update({
+        'NGO Name': newName,
+        'address': newAddress,
+        'email': newEmail,
+        'phoneNumber': newPhoneNumber,
+      });
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Party venue details updated successfully')));
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to update party venue details')));
     }
   }
 
-  void fetchPartyVenueDetails() async {
-    try {
-      DocumentSnapshot docSnapshot = await FirebaseFirestore.instance
-          .collection('ngo-details')
-          .doc(currentUserUid)
-          .get();
 
-      if (docSnapshot.exists) {
-        Map<String, dynamic>? data = docSnapshot.data() as Map<String, dynamic>?;
-        setState(() {
-          _nameController.text = data?['NGO name'] ?? '';
-          _addressController.text = data?['address'] ?? '';
-          _emailController.text = data?['email'] ?? '';
-          _phoneNumberController.text = data?['phoneNumber'] ?? '';
-        });
-      }
+  // Update password function
+  void _updatePassword() async {
+    String newPassword = _newPasswordController.text.trim();
+
+    try {
+      await FirebaseAuth.instance.currentUser!.updatePassword(newPassword);
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Password updated successfully')));
     } catch (e) {
-      print('Error fetching party venue details: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Failed to update password')));
     }
   }
 
@@ -80,11 +146,16 @@ class _EditPageState extends State<EditPage> {
           ),
         ],
       ),
-      body: Padding(
+      body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
+            Image.asset(
+              "assets/image3.png",
+              height: 150,
+            ),
+            const SizedBox(height: 20),
             TextFormField(
               controller: _nameController,
               decoration: const InputDecoration(
@@ -123,70 +194,64 @@ class _EditPageState extends State<EditPage> {
             const SizedBox(height: 10),
             TextFormField(
               controller: _phoneNumberController,
+              keyboardType: TextInputType.phone,
               decoration: const InputDecoration(
                 labelText: 'Phone Number',
                 prefixIcon: Icon(Icons.phone),
                 border: OutlineInputBorder(),
               ),
               validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return 'Please enter a phone number';
+                }
+                // Regular expression for validating 10-digit phone numbers
                 RegExp phoneRegExp = RegExp(r'^[0-9]{10}$');
-                if (!phoneRegExp.hasMatch(value!)) {
-                  return 'Enter a valid phone number';
+                if (!phoneRegExp.hasMatch(value)) {
+                  return 'Please enter a valid 10-digit phone number';
                 }
                 return null;
               },
             ),
-            const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                if (_validateForm()) {
-                  _updatePartyVenue();
-                }
-              },
-              style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.cyan.shade700,
-                  foregroundColor: Colors.white
+            const SizedBox(height: 10),
+            TextFormField(
+              controller: _newPasswordController,
+              obscureText: true,
+              decoration: const InputDecoration(
+                labelText: 'New Password',
+                prefixIcon: Icon(Icons.lock),
+                border: OutlineInputBorder(),
               ),
-              child: const Text('Update Details'),
+            ),
+            const SizedBox(height: 20),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                  onPressed: () {
+                    if (_validateForm()) {
+                      _updatePartyVenue();
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.cyan.shade700,
+                      foregroundColor: Colors.white
+                  ),
+                  child: const Text('Update Details'),
+                ),
+                ElevatedButton(
+                  onPressed: _updatePassword,
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.red,
+                      foregroundColor: Colors.white
+                  ),
+                  child: const Text('Update Password'),
+                ),
+              ],
             ),
           ],
         ),
       ),
     );
   }
-
-  bool _validateForm() {
-    if (_nameController.text.isEmpty ||
-        _addressController.text.isEmpty ||
-        _phoneNumberController.text.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please fill in all the fields')));
-      return false;
-    }
-    return true;
-  }
-
-  void _updatePartyVenue() async {
-    String newName = _nameController.text.trim();
-    String newAddress = _addressController.text.trim();
-    String newEmail = _emailController.text.trim();
-    String newPhoneNumber = _phoneNumberController.text.trim();
-
-    try {
-      await FirebaseFirestore.instance
-          .collection('ngo-details')
-          .doc(currentUserUid)
-          .update({
-        'NGO Name': newName,
-        'address': newAddress,
-        'email': newEmail,
-        'phoneNumber': newPhoneNumber,
-      });
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Party venue details updated successfully')));
-    } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Failed to update party venue details')));
-    }
-  }
 }
+

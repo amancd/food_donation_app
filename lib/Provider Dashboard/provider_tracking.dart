@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class Tracking extends StatefulWidget {
   const Tracking({super.key});
@@ -147,7 +149,12 @@ class _TrackingState extends State<Tracking> {
                       if (_request != null) ...[
                         const Text("Delivery Details:", style: TextStyle(fontSize: 16)),
                         Text('Delivery details: ${_request!['delivery_details'] ?? 'Not available'}'),
-                        Text('Google Maps Link: ${_request!['google_maps_link'] ?? 'Not available'}'),
+                        GestureDetector(
+                          onTap: () {
+                            _showMapLinkOptions(_request!['google_maps_link']);
+                          },
+                          child: Text('Google Maps Link: ${_request!['google_maps_link'] ?? 'Not available'}'),
+                        ),
                         Text('Time: ${_request!['timestamp'] != null ? DateFormat('d MMMM yyyy hh:mm a').format((_request!['timestamp'] as Timestamp).toDate()) : 'Not available'}'),
                       ] else
                         const Text('No delivery details found'),
@@ -161,5 +168,49 @@ class _TrackingState extends State<Tracking> {
         ),
       ),
     );
+  }
+
+  void _showMapLinkOptions(String? link) {
+    if (link != null && link.isNotEmpty) {
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                ListTile(
+                  leading: const Icon(Icons.copy),
+                  title: const Text('Copy Link'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    Clipboard.setData(ClipboardData(text: link));
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text('Link copied to clipboard')),
+                    );
+                  },
+                ),
+                ListTile(
+                  leading: const Icon(Icons.open_in_new),
+                  title: const Text('Open in Maps'),
+                  onTap: () {
+                    Navigator.pop(context);
+                    _launchMaps(link);
+                  },
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
+  }
+
+  void _launchMaps(String link) async {
+    if (await canLaunch(link)) {
+      await launch(link);
+    } else {
+      throw 'Could not launch $link';
+    }
   }
 }

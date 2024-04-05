@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foodapp/NGO%20Dashboard/ngo_home.dart';
-import 'package:foodapp/Provider%20Dashboard/provider_homepage.dart';
 
 
 class NGOSignUp extends StatefulWidget {
@@ -173,6 +172,12 @@ class _NGOSignUpState extends State<NGOSignUp> {
       validator: (value) {
         if (value!.isEmpty) {
           return 'Please enter $labelText';
+        }
+        if (labelText == 'Email' && !RegExp(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b').hasMatch(value)) {
+          return 'Please enter a valid email';
+        }
+        if (labelText == 'Phone Number' && !RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+          return 'Please enter a valid 10-digit phone number';
         }
         return null;
       },

@@ -141,6 +141,7 @@ class _RequestPickupFormState extends State<RequestPickupForm> {
               const SizedBox(height: 10),
               TextFormField(
                 controller: _amountController,
+                keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
                   labelText: 'Amount of Food',
                   prefixIcon: Icon(Icons.food_bank),
@@ -202,7 +203,7 @@ class _RequestPickupFormState extends State<RequestPickupForm> {
               TextFormField(
                 controller: _suggestionsController,
                 decoration: const InputDecoration(
-                  labelText: 'Suggestions (Optional)',
+                  labelText: 'Suggestions',
                   prefixIcon: Icon(Icons.comment),
                   border: OutlineInputBorder(),
                 ),

@@ -166,6 +166,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
         if (value!.isEmpty) {
           return 'Please enter $labelText';
         }
+        if (labelText == 'Email' && !RegExp(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b').hasMatch(value)) {
+          return 'Please enter a valid email';
+        }
+        if (labelText == 'Phone Number' && !RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+          return 'Please enter a valid 10-digit phone number';
+        }
         return null;
       },
     );
