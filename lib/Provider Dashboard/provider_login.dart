@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodapp/Provider%20Dashboard/provider_homepage.dart';
 import 'package:foodapp/Provider%20Dashboard/provider_signup.dart';
+import 'package:foodapp/widgets/custom_buttons.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({Key? key});
@@ -21,11 +22,23 @@ class _LoginScreenState extends State<LoginScreen> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-
-      // Navigate to the home screen after successful login
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const ProviderHomePage()),
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => ProviderHomePage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.ease;
+
+            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        ),
       );
     } catch (e) {
       // Handle login errors here
@@ -82,17 +95,18 @@ class _LoginScreenState extends State<LoginScreen> {
                 icon: Icons.lock,
                 obscureText: true,
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _login();
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: CustomButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _login();
+                    }
+                  },
+                  text: "Log In",
                 ),
-                child: const Text('Log In'),
               ),
               const SizedBox(height: 16),
               TextButton(

@@ -43,8 +43,6 @@ class _PendingRequestsScreenState extends State<PendingRequestsScreen> {
       }
   }
 
-
-
   Future<void> fetchPendingRequests() async {
       QuerySnapshot querySnapshot = await FirebaseFirestore.instance
           .collection("request_pickup")
@@ -139,11 +137,7 @@ class _PendingRequestsScreenState extends State<PendingRequestsScreen> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12.0),
-                gradient: LinearGradient(
-                  colors: [Colors.cyan.shade500, Colors.cyan.shade600],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
+                  color: Color(0xffff6e40)
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,13 +158,13 @@ class _PendingRequestsScreenState extends State<PendingRequestsScreen> {
                         const SizedBox(height: 10),
                         if (imageUrl != null) Image.network(imageUrl, height: 100),
                         const SizedBox(height: 10),
-                        Text('Name: $name'),
-                        Text('Phone: $phone'),
-                        Text('Amount: $amount'),
-                        Text('Quality: $quality'),
-                        Text('Location: $location'),
-                        Text('Items: $items'),
-                        Text('Suggestions: $suggestions'),
+                        Text('Name: $name', style: TextStyle(color: Colors.white),),
+                        Text('Phone: $phone', style: TextStyle(color: Colors.white),),
+                        Text('Amount: $amount', style: TextStyle(color: Colors.white),),
+                        Text('Quality: $quality', style: TextStyle(color: Colors.white),),
+                        Text('Location: $location', style: TextStyle(color: Colors.white),),
+                        Text('Items: $items', style: TextStyle(color: Colors.white),),
+                        Text('Suggestions: $suggestions', style: TextStyle(color: Colors.white),),
                       ],
                     ),
                   ),

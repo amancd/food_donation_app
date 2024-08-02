@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:foodapp/NGO%20Dashboard/ngo_delivery.dart';
+import 'package:foodapp/NGO%20Dashboard/ngo_home.dart';
 import 'package:foodapp/NGO%20Dashboard/ngo_pickup.dart';
 import 'package:foodapp/NGO%20Dashboard/ngo_requests.dart';
 import 'package:foodapp/allngo.dart';
@@ -32,7 +33,7 @@ Widget buildHeader(BuildContext context) {
   return Material(
     child: InkWell(
       child: Container(
-        color: Colors.cyan.shade600,
+          color: Color(0xffff6e40),
         padding: EdgeInsets.only(
           top: 10 + MediaQuery.of(context).padding.top,
           bottom: 24,
@@ -50,7 +51,7 @@ Widget buildHeader(BuildContext context) {
               ),
             ),
             const SizedBox(
-              height: 10,
+              height: 15,
             ),
             const Text(
               'Food Bridge',
@@ -60,13 +61,12 @@ Widget buildHeader(BuildContext context) {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const Text(""),
             const Center(
               child: Text(
-                "\"Food Donation App\"",
+                "v1.2",
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 14,
+                  fontSize: 10,
                   fontStyle: FontStyle.italic,
                   fontWeight: FontWeight.bold,
                 ),
@@ -91,8 +91,23 @@ Widget buildMenuItems(BuildContext context) {
           leading: const Icon(Icons.home, color: Colors.black),
           title: const Text("Home", style: TextStyle(color: Colors.black)),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const ProviderHomePage()),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => const NGOHomePage(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),
@@ -101,8 +116,23 @@ Widget buildMenuItems(BuildContext context) {
           title: const Text("Accept Pickup",
               style: TextStyle(color: Colors.black)),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const PendingRequestsScreen()),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => const PendingRequestsScreen(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),
@@ -111,8 +141,23 @@ Widget buildMenuItems(BuildContext context) {
           title: const Text("Accepted Requests",
               style: TextStyle(color: Colors.black)),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const Requests()),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => const Requests(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),
@@ -120,8 +165,23 @@ Widget buildMenuItems(BuildContext context) {
           leading: const Icon(Icons.analytics, color: Colors.black),
           title: const Text("Delivery Details", style: TextStyle(color: Colors.black)),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const DeliveryPage()),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => const DeliveryPage(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),
@@ -129,8 +189,23 @@ Widget buildMenuItems(BuildContext context) {
           leading: const Icon(Icons.local_hospital, color: Colors.black),
           title: const Text("NGO Directory", style: TextStyle(color: Colors.black)),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const AllNGOPage()),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => const AllNGOPage(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),
@@ -150,8 +225,23 @@ Widget buildMenuItems(BuildContext context) {
           leading: const Icon(Icons.description, color: Colors.black),
           title: const Text("About", style: TextStyle(color: Colors.black)),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => About()),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => About(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),
@@ -160,8 +250,23 @@ Widget buildMenuItems(BuildContext context) {
           title:
           const Text("Contact", style: TextStyle(color: Colors.black)),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => Contact()),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => Contact(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),
@@ -170,8 +275,23 @@ Widget buildMenuItems(BuildContext context) {
           title: const Text("Privacy Policy",
               style: TextStyle(color: Colors.black)),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => Privacy()),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => Privacy(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),

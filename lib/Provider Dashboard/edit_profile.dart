@@ -73,7 +73,9 @@ class _EditPartyVenuePageState extends State<EditPartyVenuePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Details'),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Edit Details', style: TextStyle(color: Colors.white),),
+        backgroundColor: const Color(0xFFf47414),
         actions: [
           IconButton(
             onPressed: () => _logout(context),

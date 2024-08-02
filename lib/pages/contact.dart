@@ -10,9 +10,9 @@ class Contact extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.cyan.shade700,
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xffff6e40),
         title: const Text("Contact", style: TextStyle(color: Colors.white)),
-        iconTheme: IconThemeData(color: Colors.white),
         actions: [
           IconButton(
             onPressed: () {

@@ -73,7 +73,9 @@ class _RequestListScreenState extends State<RequestListScreen> {
     return Scaffold(
       key: _key,
       appBar: AppBar(
-        title: const Text('Check Status'),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Check Status', style: TextStyle(color: Colors.white),),
+        backgroundColor: const Color(0xFFf47414),
       ),
       body: _requests.isEmpty
           ? const Center(
@@ -104,14 +106,10 @@ class _RequestListScreenState extends State<RequestListScreen> {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12.0),
-                gradient: LinearGradient(
-                  colors: [Colors.cyan.shade500, Colors.cyan.shade600],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
+                color: const Color(0xFFf47414),
               ),
               child: ListTile(
-                contentPadding: const EdgeInsets.all(16.0),
+                contentPadding: const EdgeInsets.all(18.0),
                 title: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -120,11 +118,11 @@ class _RequestListScreenState extends State<RequestListScreen> {
                     const SizedBox(height: 10,),
                     if (imageUrl != null) Image.network(imageUrl, height: 100,),
                     const SizedBox(height: 10,),
-                    Text('Amount: $amount',),
-                    Text('Quality: $quality'),
-                    Text('Location: $location'),
-                    Text('Items: $items'),
-                    Text('Suggestions: $suggestions'),
+                    Text('Amount: $amount', style: const TextStyle(color: Colors.white),),
+                    Text('Quality: $quality', style: const TextStyle(color: Colors.white),),
+                    Text('Location: $location', style: const TextStyle(color: Colors.white), ),
+                    Text('Items: $items', style: const TextStyle(color: Colors.white),),
+                    Text('Suggestions: $suggestions', style: const TextStyle(color: Colors.white),),
                   ],
                 ),
                 trailing: isPending

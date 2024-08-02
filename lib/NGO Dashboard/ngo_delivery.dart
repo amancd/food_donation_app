@@ -80,7 +80,12 @@ class _DeliveryPageState extends State<DeliveryPage> {
         'delivery_details': _deliveryDetailsController.text,
         'google_maps_link': _googleMapsLinkController.text,
       });
-      // Show success message or navigate to next screen
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Delivery details updated successfully'),
+          duration: Duration(seconds: 2), // Adjust the duration as needed
+        ),
+      );
     } catch (error) {
       print('Error updating delivery process: $error');
       // Show error message
@@ -91,14 +96,16 @@ class _DeliveryPageState extends State<DeliveryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Delivery Page'),
+        iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xffff6e40),
+        title: const Text('Delivery Page', style: TextStyle(color: Colors.white),),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            SizedBox(height: 16,),
+            const SizedBox(height: 16,),
             TextFormField(
               controller: _phoneNumberController,
               keyboardType: TextInputType.phone,

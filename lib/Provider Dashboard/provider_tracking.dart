@@ -26,8 +26,6 @@ class _TrackingState extends State<Tracking> {
           .get();
 
       if (querySnapshot.docs.isNotEmpty) {
-        // If there are multiple documents with the same phone number,
-        // let the user choose which one to view
         if (querySnapshot.docs.length > 1) {
           await showDialog(
             context: context,
@@ -39,8 +37,9 @@ class _TrackingState extends State<Tracking> {
                     children: querySnapshot.docs.map((doc) {
                       return ListTile(
                         title: Text(doc['pickupid']),
-                        onTap: () {
+                        onTap: () async {
                           Navigator.of(context).pop(doc.data());
+                          await _fetchData(); // Await the fetchData call
                         },
                       );
                     }).toList(),
@@ -59,9 +58,9 @@ class _TrackingState extends State<Tracking> {
           setState(() {
             _requestData = querySnapshot.docs.first.data() as Map<String, dynamic>?;
           });
+          await _fetchData(); // Await the fetchData call
         }
       } else {
-        // Request not found
         setState(() {
           _requestData = null;
         });
@@ -72,20 +71,21 @@ class _TrackingState extends State<Tracking> {
   }
 
   Future<void> _fetchData() async {
-    QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-        .collection("delivery")
-        .where('pickupid', isEqualTo: _requestData!['pickupid'])
-        .get();
+    if (_requestData != null) {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
+          .collection("delivery")
+          .where('pickupid', isEqualTo: _requestData!['pickupid'])
+          .get();
 
-    if (querySnapshot.docs.isNotEmpty) {
-      setState(() {
-        _request = querySnapshot.docs.first.data() as Map<String, dynamic>?;
-      });
-    } else {
-      // Delivery details not found
-      setState(() {
-        _request = null;
-      });
+      if (querySnapshot.docs.isNotEmpty) {
+        setState(() {
+          _request = querySnapshot.docs.first.data() as Map<String, dynamic>?;
+        });
+      } else {
+        setState(() {
+          _request = null;
+        });
+      }
     }
   }
 
@@ -93,7 +93,9 @@ class _TrackingState extends State<Tracking> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Tracking'),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Tracking', style: TextStyle(color: Colors.white),),
+        backgroundColor: const Color(0xFFf47414),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -108,7 +110,6 @@ class _TrackingState extends State<Tracking> {
                 labelText: 'Enter Phone Number',
                 prefixIcon: Icon(Icons.phone),
                 border: OutlineInputBorder(),
-                // You can customize the appearance of the outline border further if needed
               ),
               onChanged: (value) {
                 setState(() {
@@ -120,11 +121,10 @@ class _TrackingState extends State<Tracking> {
             ElevatedButton(
               onPressed: () {
                 _fetchRequestData();
-                _fetchData();
               },
               style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.cyan.shade600,
-                foregroundColor: Colors.white
+                  backgroundColor: const Color(0xFFf47414),
+                  foregroundColor: Colors.white
               ),
               child: const Text('Fetch Request Data'),
             ),

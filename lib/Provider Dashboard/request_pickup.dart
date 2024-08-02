@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
@@ -7,7 +6,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class RequestPickupForm extends StatefulWidget {
-  const RequestPickupForm({Key? key});
+  const RequestPickupForm({Key? key}) : super(key: key);
 
   @override
   _RequestPickupFormState createState() => _RequestPickupFormState();
@@ -34,40 +33,35 @@ class _RequestPickupFormState extends State<RequestPickupForm> {
 
   Future<UserData?> getUserData() async {
     final user = FirebaseAuth.instance.currentUser;
-    final userId = user!.uid;
-    DocumentSnapshot snapshot = await FirebaseFirestore.instance
-        .collection('party-venue')
-        .doc(userId)
-        .get();
+    if (user != null) {
+      DocumentSnapshot snapshot = await FirebaseFirestore.instance
+          .collection('party-venue')
+          .doc(user.uid)
+          .get();
 
-    if (snapshot.exists) {
-      Map<String, dynamic>? data =
-          snapshot.data() as Map<String, dynamic>?; // Explicit cast
-      if (data != null) {
-        String? phoneNumber = data['phoneNumber'] as String?;
-        String? name = data['name'] as String?;
-        return UserData(phoneNumber: phoneNumber, name: name);
-      } else {
-        return null;
+      if (snapshot.exists) {
+        Map<String, dynamic>? data =
+        snapshot.data() as Map<String, dynamic>?; // Explicit cast
+        if (data != null) {
+          String? phoneNumber = data['phoneNumber'] as String?;
+          String? name = data['name'] as String?;
+          return UserData(phoneNumber: phoneNumber, name: name);
+        }
       }
-    } else {
-      return null;
     }
+    return null;
   }
 
-  // Method to handle form submission
   void _submitForm() async {
     UserData? userData = await getUserData();
-    if (_formKey.currentState!.validate()) {
+    if (_formKey.currentState!.validate() && userData != null) {
       final user = FirebaseAuth.instance.currentUser;
       final userId = user!.uid;
 
       try {
-        // Generate a unique pickupid
         final pickupid =
             FirebaseFirestore.instance.collection('request_pickup').doc().id;
 
-        // Upload image to Firebase Storage
         String? imageUrl;
         if (_image != null) {
           final storageRef = firebase_storage.FirebaseStorage.instance
@@ -79,34 +73,31 @@ class _RequestPickupFormState extends State<RequestPickupForm> {
           imageUrl = await snapshot.ref.getDownloadURL();
         }
 
-        // Save form data including image URL, pickupid, and userid
         await FirebaseFirestore.instance
             .collection('request_pickup')
             .doc(pickupid)
             .set({
-          'userid': userId, // User ID
-          'pickupid': pickupid, // Unique pickup ID
+          'userid': userId,
+          'pickupid': pickupid,
           'amount': _amountController.text,
           'quality': _qualityController.text,
           'location': _locationController.text,
           'items': _itemsController.text,
           'suggestions': _suggestionsController.text,
           'timestamp': FieldValue.serverTimestamp(),
-          'imageUrl': imageUrl, // Add image URL to Firestore
-          'accepted': 'Pending', // Initial value for accepted status
-          'phone': userData!.phoneNumber,
+          'imageUrl': imageUrl,
+          'accepted': 'Pending',
+          'phone': userData.phoneNumber,
           'name': userData.name,
-          'ngo': '', // Initial value for ngo
+          'ngo': '',
         });
 
-        // Show confirmation message
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Request submitted successfully!'),
           ),
         );
 
-        // Clear form fields and image
         _amountController.clear();
         _qualityController.clear();
         _locationController.clear();
@@ -118,6 +109,8 @@ class _RequestPickupFormState extends State<RequestPickupForm> {
       } catch (error) {
         print('Error submitting request: $error');
       }
+    } else {
+      print('Error: User data is null or form validation failed.');
     }
   }
 
@@ -125,7 +118,9 @@ class _RequestPickupFormState extends State<RequestPickupForm> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Request Pickup'),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('Request Pickup', style: TextStyle(color: Colors.white),),
+        backgroundColor: const Color(0xFFf47414),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16.0),
@@ -134,17 +129,18 @@ class _RequestPickupFormState extends State<RequestPickupForm> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: <Widget>[
-              Image.asset(
-                "assets/pickup.jpg",
-                height: 150,
-              ),
               const SizedBox(height: 10),
+              const Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Text("Note: Please make sure to enter the details correctly."),
+              ),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: _amountController,
                 keyboardType: TextInputType.number,
                 decoration: const InputDecoration(
-                  labelText: 'Amount of Food',
-                  prefixIcon: Icon(Icons.food_bank),
+                  labelText: 'Quantity of Food',
+                  prefixIcon: Icon(Icons.food_bank, color: Colors.black,),
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
@@ -159,7 +155,7 @@ class _RequestPickupFormState extends State<RequestPickupForm> {
                 controller: _qualityController,
                 decoration: const InputDecoration(
                   labelText: 'Quality of Food',
-                  prefixIcon: Icon(Icons.star),
+                  prefixIcon: Icon(Icons.star, color: Colors.black,),
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
@@ -174,7 +170,7 @@ class _RequestPickupFormState extends State<RequestPickupForm> {
                 controller: _locationController,
                 decoration: const InputDecoration(
                   labelText: 'Address',
-                  prefixIcon: Icon(Icons.location_on),
+                  prefixIcon: Icon(Icons.location_on, color: Colors.black,),
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
@@ -188,8 +184,8 @@ class _RequestPickupFormState extends State<RequestPickupForm> {
               TextFormField(
                 controller: _itemsController,
                 decoration: const InputDecoration(
-                  labelText: 'Items',
-                  prefixIcon: Icon(Icons.shopping_basket),
+                  labelText: 'Items Name',
+                  prefixIcon: Icon(Icons.shopping_basket, color: Colors.black,),
                   border: OutlineInputBorder(),
                 ),
                 validator: (value) {
@@ -204,7 +200,7 @@ class _RequestPickupFormState extends State<RequestPickupForm> {
                 controller: _suggestionsController,
                 decoration: const InputDecoration(
                   labelText: 'Suggestions',
-                  prefixIcon: Icon(Icons.comment),
+                  prefixIcon: Icon(Icons.comment, color: Colors.black,),
                   border: OutlineInputBorder(),
                 ),
                 maxLines: 3,
@@ -218,10 +214,14 @@ class _RequestPickupFormState extends State<RequestPickupForm> {
               ElevatedButton.icon(
                 onPressed: _uploadImage,
                 icon: const Icon(Icons.image),
-                label: const Text('Upload Image'),
+                label: const Text('Upload Photo'),
               ),
-              const SizedBox(height: 24.0),
+              const SizedBox(height: 20.0),
               ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: const Color(0xFFf47414),
+                  foregroundColor: Colors.white
+                ),
                 onPressed: _submitForm,
                 child: const Text('Submit Request'),
               ),

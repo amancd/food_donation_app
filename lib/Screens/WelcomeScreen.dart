@@ -33,13 +33,25 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                             onPressed: () {
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(
-                                  builder: (context) => const NGOLogin(),
+                                PageRouteBuilder(
+                                  pageBuilder: (context, animation, secondaryAnimation) => AdminLogin(),
+                                  transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                                    const begin = Offset(1.0, 0.0);
+                                    const end = Offset.zero;
+                                    const curve = Curves.ease;
+
+                                    var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                                    return SlideTransition(
+                                      position: animation.drive(tween),
+                                      child: child,
+                                    );
+                                  },
                                 ),
                               );
                             },
                             child: const Text(
-                              "NGO Login",
+                              "Admin Login",
                               style: TextStyle(
                                 color: Colors.blueAccent,
                               ),
@@ -49,12 +61,11 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                       ),
                     ),
                     Image.asset(
-                      "assets/image1.png",
+                      "assets/food.png",
                       height: 300,
                     ),
-                    const SizedBox(height: 20),
                     const Text(
-                      "Let's get started",
+                      "Help Feed India!",
                       style: TextStyle(
                         fontSize: 22,
                         fontWeight: FontWeight.bold,
@@ -62,7 +73,7 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                     const SizedBox(height: 10),
                     const Text(
-                      "Never a better time than now to start.",
+                      "Support NGOs by donating surplus food today!",
                       style: TextStyle(
                         fontSize: 14,
                         color: Colors.black38,
@@ -71,17 +82,29 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                     ),
                   ],
                 ),
-                const SizedBox(height: 30,),
+                const SizedBox(height: 10,),
                 TextButton(
                   onPressed: () {
                     Navigator.push(
                       context,
-                      MaterialPageRoute(
-                        builder: (context) => const AdminLogin(),
+                      PageRouteBuilder(
+                        pageBuilder: (context, animation, secondaryAnimation) => NGOLogin(),
+                        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                          const begin = Offset(1.0, 0.0);
+                          const end = Offset.zero;
+                          const curve = Curves.ease;
+
+                          var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                          return SlideTransition(
+                            position: animation.drive(tween),
+                            child: child,
+                          );
+                        },
                       ),
                     );
                   },
-                  child: const Text("Admin Login"),
+                  child: const Text("NGO Login"),
                 ),
                 SizedBox(
                   width: double.infinity,
@@ -89,14 +112,31 @@ class _WelcomeScreenState extends State<WelcomeScreen> {
                   child: CustomButton(
                     onPressed: () async {
                       Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const LoginScreen(),
-                            ),
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (context, animation, secondaryAnimation) => LoginScreen(),
+                          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                            const begin = Offset(1.0, 0.0);
+                            const end = Offset.zero;
+                            const curve = Curves.ease;
+
+                            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                            return SlideTransition(
+                              position: animation.drive(tween),
+                              child: child,
+                            );
+                          },
+                        ),
                       );
-                      },
+                    },
                     text: "Sign In",
                   ),
+                ),
+                const SizedBox(height: 120,),
+                Image.asset(
+                  "assets/makeinindia.png",
+                  height: 30,
                 ),
               ],
             ),

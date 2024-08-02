@@ -3,6 +3,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:foodapp/Admin%20Dashboard/admin_home.dart';
 import 'package:foodapp/NGO%20Dashboard/ngo_signup.dart';
 import 'package:foodapp/Provider%20Dashboard/provider_homepage.dart';
+import 'package:foodapp/widgets/custom_buttons.dart';
 
 class AdminLogin extends StatefulWidget {
   const AdminLogin({Key? key});
@@ -22,11 +23,24 @@ class _AdminLoginState extends State<AdminLogin> {
         email: _emailController.text,
         password: _passwordController.text,
       );
-
       // Navigate to the home screen after successful login
       Navigator.pushReplacement(
         context,
-        MaterialPageRoute(builder: (context) => const AdminHomePage()),
+        PageRouteBuilder(
+          pageBuilder: (context, animation, secondaryAnimation) => AdminHomePage(),
+          transitionsBuilder: (context, animation, secondaryAnimation, child) {
+            const begin = Offset(1.0, 0.0);
+            const end = Offset.zero;
+            const curve = Curves.ease;
+
+            var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          },
+        ),
       );
     } catch (e) {
       // Handle login errors here
@@ -66,16 +80,17 @@ class _AdminLoginState extends State<AdminLogin> {
                 obscureText: true,
               ),
               const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState!.validate()) {
-                    _login();
-                  }
-                },
-                style: ElevatedButton.styleFrom(
-                  padding: const EdgeInsets.symmetric(vertical: 16),
+              SizedBox(
+                width: double.infinity,
+                height: 50,
+                child: CustomButton(
+                  onPressed: () async {
+                    if (_formKey.currentState!.validate()) {
+                      _login();
+                    }
+                  },
+                  text: "Log In",
                 ),
-                child: const Text('Log In'),
               ),
               const SizedBox(height: 16),
             ],

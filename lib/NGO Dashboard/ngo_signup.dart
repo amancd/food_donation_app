@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foodapp/NGO%20Dashboard/ngo_home.dart';
-
+import 'package:foodapp/widgets/custom_buttons.dart';
 
 class NGOSignUp extends StatefulWidget {
   const NGOSignUp({Key? key});
@@ -22,8 +22,8 @@ class _NGOSignUpState extends State<NGOSignUp> {
   Future<void> _signUp() async {
     try {
       // Create user with email and password
-      UserCredential userCredential = await FirebaseAuth.instance
-          .createUserWithEmailAndPassword(
+      UserCredential userCredential =
+          await FirebaseAuth.instance.createUserWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
@@ -44,7 +44,8 @@ class _NGOSignUpState extends State<NGOSignUp> {
             context: context,
             builder: (context) => AlertDialog(
               title: const Text('User Already Registered'),
-              content: const Text('The email address provided is already registered.'),
+              content: const Text(
+                  'The email address provided is already registered.'),
               actions: <Widget>[
                 TextButton(
                   onPressed: () {
@@ -83,7 +84,6 @@ class _NGOSignUpState extends State<NGOSignUp> {
       // You can show a dialog or a snackbar to display the error to the user
     }
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -136,15 +136,21 @@ class _NGOSignUpState extends State<NGOSignUp> {
                   labelText: 'Address',
                   icon: Icons.location_on,
                 ),
-                const SizedBox(height: 12),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _signUp();
-                    }
-                  },
-                  child: const Text('Sign Up'),
-                ),
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: CustomButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        _signUp();
+                      }
+                      child:
+                      const Text('Sign Up');
+                    },
+                    text: 'Sign Up',
+                  ),
+                )
               ],
             ),
           ),
@@ -173,10 +179,13 @@ class _NGOSignUpState extends State<NGOSignUp> {
         if (value!.isEmpty) {
           return 'Please enter $labelText';
         }
-        if (labelText == 'Email' && !RegExp(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b').hasMatch(value)) {
+        if (labelText == 'Email' &&
+            !RegExp(r'\b[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Z|a-z]{2,}\b')
+                .hasMatch(value)) {
           return 'Please enter a valid email';
         }
-        if (labelText == 'Phone Number' && !RegExp(r'^[0-9]{10}$').hasMatch(value)) {
+        if (labelText == 'Phone Number' &&
+            !RegExp(r'^[0-9]{10}$').hasMatch(value)) {
           return 'Please enter a valid 10-digit phone number';
         }
         return null;

@@ -8,9 +8,9 @@ class Privacy extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.cyan.shade600,
-        title: const Text("Privacy Policy", style: TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xffff6e40),
+        title: const Text("Privacy Policy", style: TextStyle(color: Colors.white)),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

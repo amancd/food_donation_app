@@ -8,7 +8,9 @@ class AllNGOPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('All NGOs'),
+        iconTheme: const IconThemeData(color: Colors.white),
+        title: const Text('All NGOs', style: TextStyle(color: Colors.white),),
+        backgroundColor: const Color(0xFFf47414),
       ),
       body: StreamBuilder<QuerySnapshot>(
         stream: FirebaseFirestore.instance.collection('ngo-details').snapshots(),
@@ -28,11 +30,7 @@ class AllNGOPage extends StatelessWidget {
                   margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(12.0),
-                    gradient: LinearGradient(
-                      colors: [Colors.blueAccent, Colors.lightBlue.shade600],
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                    ),
+                    color: Colors.white70,
                     boxShadow: [
                       BoxShadow(
                         color: Colors.deepPurple.withOpacity(0.4),
@@ -45,18 +43,16 @@ class AllNGOPage extends StatelessWidget {
                   child: ListTile(
                     title: Text(
                       ngoData['NGO Name'],
-                      style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                      style: const TextStyle(fontWeight: FontWeight.bold),
                     ),
                     subtitle: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Phone: ${ngoData['phoneNumber']}',
-                          style: TextStyle(color: Colors.white),
                         ),
                         Text(
                           'Address: ${ngoData['address']}',
-                          style: TextStyle(color: Colors.white),
                         ),
                       ],
                     ),

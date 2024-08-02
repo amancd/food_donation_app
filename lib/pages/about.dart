@@ -11,9 +11,9 @@ class About extends StatelessWidget {
       key: _key,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.cyan.shade700,
-        title: const Text("About", style: TextStyle(color: Colors.white)),
         iconTheme: const IconThemeData(color: Colors.white),
+        backgroundColor: const Color(0xffff6e40),
+        title: const Text("About", style: TextStyle(color: Colors.white)),
       ),
       body: Column(
         crossAxisAlignment: CrossAxisAlignment.center,

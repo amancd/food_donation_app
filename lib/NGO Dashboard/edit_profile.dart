@@ -138,7 +138,9 @@ class _EditPageState extends State<EditPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Edit Details'),
+        title: const Text('Edit Details', style: TextStyle(color: Colors.white),),
+        iconTheme: IconThemeData(color: Colors.white),
+        backgroundColor: Color(0xffff6e40),
         actions: [
           IconButton(
             onPressed: () => _logout(context),

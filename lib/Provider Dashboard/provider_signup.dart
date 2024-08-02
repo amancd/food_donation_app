@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:foodapp/Provider%20Dashboard/provider_homepage.dart';
+import 'package:foodapp/widgets/custom_buttons.dart';
 
 
 class SignUpScreen extends StatefulWidget {
@@ -129,14 +130,18 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   labelText: 'Address',
                   icon: Icons.location_on,
                 ),
-                const SizedBox(height: 12),
-                ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      _signUp();
-                    }
-                  },
-                  child: const Text('Sign Up'),
+                const SizedBox(height: 24),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: CustomButton(
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        _signUp();
+                      }
+                    },
+                    text: "Sign Up",
+                  ),
                 ),
               ],
             ),

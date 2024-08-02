@@ -31,7 +31,7 @@ Widget buildHeader(BuildContext context) {
   return Material(
     child: InkWell(
       child: Container(
-        color: Colors.cyan.shade600,
+        color: const Color(0xFFf47414),
         padding: EdgeInsets.only(
           top: 10 + MediaQuery.of(context).padding.top,
           bottom: 24,
@@ -49,25 +49,22 @@ Widget buildHeader(BuildContext context) {
               ),
             ),
             const SizedBox(
-              height: 10,
+              height: 15,
             ),
             const Text(
-              'Food Bridge',
+              'Food Bridge App',
               style: TextStyle(
                 color: Colors.white,
-                fontSize: 21,
+                fontSize: 20,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const Text(""),
             const Center(
               child: Text(
-                "\"Food Donation App\"",
+                "v1.2",
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 14,
-                  fontStyle: FontStyle.italic,
-                  fontWeight: FontWeight.bold,
+                  fontSize: 16,
                 ),
               ),
             )
@@ -86,53 +83,128 @@ Widget buildMenuItems(BuildContext context) {
       runSpacing: 5,
       children: [
         ListTile(
-          leading: const Icon(Icons.home, color: Colors.black),
+          leading: const Icon(Icons.home, color: Colors.deepOrange),
           title: const Text("Home", style: TextStyle(color: Colors.black)),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const ProviderHomePage()),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => const ProviderHomePage(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),
         ListTile(
-          leading: const Icon(Icons.delivery_dining, color: Colors.black),
+          leading: const Icon(Icons.delivery_dining, color: Colors.deepOrange),
           title: const Text("Request Pickup",
               style: TextStyle(color: Colors.black)),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const RequestPickupForm()),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => const RequestPickupForm(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),
         ListTile(
-          leading: const Icon(Icons.analytics, color: Colors.black),
+          leading: const Icon(Icons.analytics, color: Colors.deepOrange),
           title: const Text("Check Status", style: TextStyle(color: Colors.black)),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const RequestListScreen()),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => const RequestListScreen(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),
         ListTile(
-          leading: const Icon(Icons.local_hospital, color: Colors.black),
+          leading: const Icon(Icons.local_hospital, color: Colors.deepOrange),
           title: const Text("NGO Directory", style: TextStyle(color: Colors.black)),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const AllNGOPage()),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => const AllNGOPage(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),
         ListTile(
-          leading: const Icon(Icons.location_on, color: Colors.black),
+          leading: const Icon(Icons.location_on, color: Colors.deepOrange),
           title: const Text("Tracking", style: TextStyle(color: Colors.black)),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => const Tracking()),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => const Tracking(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),
         ListTile(
-          leading: const Icon(Icons.share, color: Colors.black),
+          leading: const Icon(Icons.share, color: Colors.deepOrange),
           title: const Text("Share", style: TextStyle(color: Colors.black)),
           onTap: () {
             // shareAppLink();
@@ -144,31 +216,76 @@ Widget buildMenuItems(BuildContext context) {
           color: Colors.black,
         ),
         ListTile(
-          leading: const Icon(Icons.description, color: Colors.black),
+          leading: const Icon(Icons.description, color: Colors.deepOrange),
           title: const Text("About", style: TextStyle(color: Colors.black)),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => About()),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => About(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),
         ListTile(
-          leading: const Icon(Icons.error, color: Colors.black),
+          leading: const Icon(Icons.error, color: Colors.deepOrange),
           title:
           const Text("Contact", style: TextStyle(color: Colors.black)),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => Contact()),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => Contact(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),
         ListTile(
-          leading: const Icon(Icons.policy, color: Colors.black),
+          leading: const Icon(Icons.policy, color: Colors.deepOrange),
           title: const Text("Privacy Policy",
               style: TextStyle(color: Colors.black)),
           onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => Privacy()),
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (context, animation, secondaryAnimation) => Privacy(),
+                transitionsBuilder: (context, animation, secondaryAnimation, child) {
+                  const begin = Offset(1.0, 0.0);
+                  const end = Offset.zero;
+                  const curve = Curves.ease;
+
+                  var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+                  return SlideTransition(
+                    position: animation.drive(tween),
+                    child: child,
+                  );
+                },
+              ),
             );
           },
         ),

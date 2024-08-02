@@ -107,7 +107,7 @@ class _AllRequestsState extends State<AllRequests> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(12.0),
                 gradient: LinearGradient(
-                  colors: [Colors.cyan.shade500, Colors.cyan.shade600],
+                  colors: [Colors.lightBlue, Colors.purple.shade500],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
@@ -135,15 +135,15 @@ class _AllRequestsState extends State<AllRequests> {
                     const SizedBox(
                       height: 10,
                     ),
-                    Text('Name: $name'),
-                    Text('Phone: $phone'),
-                    Text('Amount: $amount'),
-                    Text('Quality: $quality'),
-                    Text('Location: $location'),
-                    Text('Items: $items'),
-                    Text('Suggestions: $suggestions'),
-                    Text('User id: $uid'),
-                    Text('Pickup id: $pickupId'),
+                    Text('Name: $name', style: const TextStyle(color: Colors.white),),
+                    Text('Phone: $phone', style: const TextStyle(color: Colors.white),),
+                    Text('Amount: $amount', style: const TextStyle(color: Colors.white),),
+                    Text('Quality: $quality', style: const TextStyle(color: Colors.white),),
+                    Text('Location: $location', style: const TextStyle(color: Colors.white),),
+                    Text('Items: $items', style: const TextStyle(color: Colors.white),),
+                    Text('Suggestions: $suggestions', style: const TextStyle(color: Colors.white),),
+                    Text('User id: $uid', style: const TextStyle(color: Colors.white),),
+                    Text('Pickup id: $pickupId', style: const TextStyle(color: Colors.white),),
                   ],
                 ),
                 trailing: isPending
